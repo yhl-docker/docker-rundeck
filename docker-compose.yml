@@ -1,0 +1,22 @@
+version: '2'
+services:
+  Rundeck:
+    image: jordan/rundeck:latest
+    environment:
+      SERVER_URL: http://192.168.200.37:4440
+      DATABASE_URL: jdbc:mysql://mysql.db/rundeckdb?autoReconnect=true
+      RUNDECK_PASSWORD: root
+      RUNDECK_ADMIN_PASSWORD: Sygame@rundeck
+      NO_LOCAL_MYSQL: 'true'
+    stdin_open: true
+    volumes:
+    - /data/rundeck/lib/logs:/var/lib/rundeck/logs
+    - /data/rundeck/rundeck-plugins:/opt/rundeck-plugins
+    - /data/rundeck/log:/var/log/rundeck
+    - /data/rundeck/lib/var:/var/lib/rundeck/var/storage
+    tty: true
+    ports:
+    - 4440:4440/tcp
+    labels:
+      io.rancher.container.pull_image: always
+      io.rancher.scheduler.affinity:host_label: db=1
